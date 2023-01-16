@@ -7,7 +7,6 @@ import android.util.Log
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.constraintlayout.widget.ConstraintLayout
-import com.claratoll.tabatatimer.R
 
 class WorkoutActivity : AppCompatActivity() {
 
@@ -15,18 +14,18 @@ class WorkoutActivity : AppCompatActivity() {
     lateinit var timeView: TextView
     lateinit var roundsView: TextView
 
-    var workoutSeconds: Int = 0
-    var restSeconds: Int = 0
+    var getWorkSeconds: Int = 0
+    var getRestSeconds: Int = 0
     var rounds: Int = 0
 
-    var goCountDownTimer: CountDownTimer? = null
-    var restCountDownTimer: CountDownTimer? = null
+    var timeInMillisLeft : Long = 0L
 
-    val REST : Int = 1
-    val WORK : Int = 0
+    var countDownTimer: CountDownTimer? = null
+
     lateinit var layout : ConstraintLayout
 
-
+    var running : Boolean = true
+    var WORK : Boolean = true
 
 
 
@@ -39,87 +38,117 @@ class WorkoutActivity : AppCompatActivity() {
         roundsView = findViewById(R.id.RoundsTextView)
         layout = findViewById(R.id.workoutlayout)
 
-        workoutSeconds = intent.getIntExtra("workSeconds", 99)
-        restSeconds = intent.getIntExtra("restSeconds", 99)
+        getWorkSeconds = intent.getIntExtra("workSeconds", 99)
+        getRestSeconds = intent.getIntExtra("restSeconds", 99)
         rounds = intent.getIntExtra("rounds", 99)
 
-        workout(WORK)
+        workout()
+
+        layout.setOnClickListener {
+            if (running) {
+                clickPause()
+                running = false
+            } else {
+                val time = timeView.text.toString()
+                timeInMillisLeft = time.toLong()
+                clickResume()
+                running = true
+            }
+        }
     }
 
-    fun workout(mode: Int) {
+    private fun workout() {
+        var workoutSeconds = getWorkSeconds
+        var restSeconds = getRestSeconds
+
+        if (timeInMillisLeft != 0L){
+            if (WORK){
+                workoutSeconds = timeInMillisLeft.toInt()
+
+            } else {
+                Log.v("!!!", restSeconds.toString())
+                restSeconds = timeInMillisLeft.toInt()
+                Log.v("!!!", restSeconds.toString())
+
+            }
+            timeInMillisLeft = 0L
+        }
 
         val media = MediaPlayer.create(this, R.raw.countdown)
 
-            if (mode == WORK) {
+            if (WORK) {
                 layout.setBackgroundColor(getColor(R.color.bittersweet_shimmer))
-                goCountDownTimer = object : CountDownTimer((workoutSeconds * 1000).toLong(), 1000) {
+                countDownTimer = object : CountDownTimer((workoutSeconds * 1000).toLong(), 1000) {
 
                     override fun onTick(millisUntilFinished: Long) {
                         timeView.text = (millisUntilFinished / 1000).toString()
                         goRestTextView.text = "GO"
                         roundsView.text = "$rounds"
 
-                        val three : Long = 3
-                        if ((millisUntilFinished/1000) == three){
+                        if ((millisUntilFinished/1000) == 3L){
                             media.start()
                         }
-
                     }
 
                     override fun onFinish() {
                         rounds--
-                        workout(REST)
+                        WORK = false
+                        workout()
                         goRestTextView.text = "REST"
+                        media.stop()
                     }
                 }.start()
 
 
-            } else if (mode == REST) {
+            } else if (!WORK) {
                 layout.setBackgroundColor(getColor(R.color.hookers_green))
-                restCountDownTimer = object : CountDownTimer((restSeconds * 1000).toLong(), 1000) {
+                countDownTimer = object : CountDownTimer((restSeconds * 1000).toLong(), 1000) {
+
                     override fun onTick(millisUntilFinished: Long) {
                         timeView.text = (millisUntilFinished / 1000).toString()
                         goRestTextView.text = "REST"
                         roundsView.text = "$rounds"
 
-                        Log.v("!!!", millisUntilFinished.toString())
-
-                        val three : Long = 3
-                        if ((millisUntilFinished/1000) == three){
+                        if ((millisUntilFinished/1000) == 3L){
                             media.start()
                         }
-
                     }
 
                     override fun onFinish() {
+                        media.stop()
                         if (rounds > 0) {
-                            workout(WORK)
+                            WORK = true
+                            workout()
                             goRestTextView.text = "GO"
                         } else {
                             workoutFinished()
                         }
-
                     }
                 }.start()
             }
+    }
 
+    private fun clickPause(){
+        countDownTimer!!.cancel()
+    }
+
+    private fun clickResume() {
+        timeInMillisLeft = timeView.text.toString().toLong()
+        workout()
     }
 
     override fun onPause() {
         super.onPause()
-        goCountDownTimer!!.cancel()
-        restCountDownTimer!!.cancel()
+        countDownTimer!!.cancel()
     }
 
     override fun onStop() {
         super.onStop()
-        goCountDownTimer!!.cancel()
-        restCountDownTimer!!.cancel()
+        countDownTimer!!.cancel()
     }
 
     fun workoutFinished(){
         timeView.text = "done"
         layout.setBackgroundColor(getColor(R.color.true_blue))
     }
-
 }
