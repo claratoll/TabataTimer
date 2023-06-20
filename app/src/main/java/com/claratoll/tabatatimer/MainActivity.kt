@@ -13,6 +13,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var editRestSeconds : EditText
     private lateinit var editRounds : EditText
     private lateinit var startButton : Button
+    private lateinit var customButton : Button
 
     private var workSeconds : Int = 20
     private var restSeconds : Int = 10
@@ -28,11 +29,21 @@ class MainActivity : AppCompatActivity() {
         editRounds = findViewById(R.id.EditRounds)
 
         startButton = findViewById(R.id.ToWorkoutButton)
+        customButton = findViewById(R.id.AddCustomButton)
 
         startButton.setOnClickListener {
             editNumbers()
             goToWorkActivity()
         }
+
+        customButton.setOnClickListener {
+            goToCustomActivity()
+        }
+    }
+
+    fun goToCustomActivity() {
+        val intent = Intent(this, ExerciseActivity::class.java)
+        startActivity(intent)
     }
 
     fun editNumbers (){

@@ -2,78 +2,80 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:background="@color/background"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".MainActivity">
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:background="@drawable/popupbg"
+    android:layout_gravity="center"
+    android:padding="10dp">
 
 
-    <ImageView
-        android:id="@+id/strongandhappy"
-        android:layout_width="match_parent"
-        android:layout_height="299dp"
-        android:src="@drawable/strongandhappy1"
+    <TextView
+        android:id="@+id/textview"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:text="choose exercise"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <Button
-        android:id="@+id/ToWorkoutButton"
+    <EditText
+        android:id="@+id/editExercisePop"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Start"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_marginTop="20dp"
+        android:ems="10"
+        android:inputType="textPersonName"
+        android:text="Exercise"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/EditRounds" />
+        app:layout_constraintTop_toBottomOf="@+id/textview" />
 
     <EditText
-        android:id="@+id/EditWorkSeconds"
-        android:layout_width="100dp"
+        android:id="@+id/editGoTimePop"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
         android:ems="10"
         android:inputType="textPersonName"
         android:text="20"
-        android:textColor="@color/black"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/strongandhappy" />
+        app:layout_constraintTop_toBottomOf="@+id/editExercisePop" />
 
     <EditText
-        android:id="@+id/EditRestSeconds"
-        android:layout_width="100dp"
+        android:id="@+id/editRestTimePop"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
         android:ems="10"
         android:inputType="textPersonName"
-        android:textColor="@color/black"
         android:text="10"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/EditWorkSeconds" />
+        app:layout_constraintTop_toBottomOf="@+id/editGoTimePop" />
 
     <EditText
-        android:id="@+id/EditRounds"
-        android:layout_width="100dp"
+        android:id="@+id/EditRoundsPop"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
-        android:textColor="@color/black"
         android:ems="10"
         android:inputType="textPersonName"
         android:text="8"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/EditRestSeconds" />
+        app:layout_constraintTop_toBottomOf="@+id/editRestTimePop" />
 
     <Button
-        android:id="@+id/AddCustomButton"
+        android:id="@+id/savePopUpButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Add custom exercise"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_marginTop="50dp"
+        android:text="Save"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/ToWorkoutButton" />
+        app:layout_constraintTop_toBottomOf="@+id/EditRoundsPop" />
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>
